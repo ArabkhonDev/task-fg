@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('content');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('region_id')->constrained()->cascadeOnDelete();
+            $table->string('image')->nullable();
+            $table->decimal('price', 10,2);
+
             $table->timestamps();
         });
     }

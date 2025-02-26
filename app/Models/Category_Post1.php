@@ -9,4 +9,5 @@ class Category_Post extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoryPostFactory> */
     use HasFactory;
+    
 }
