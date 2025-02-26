@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'categories'=>CategoryController::class,
         'tags'=>TagController::class
     ]);
+    Route::get('/posts/filter', [PostController::class, 'filter'])->name('posts.filter');
 });
 
 

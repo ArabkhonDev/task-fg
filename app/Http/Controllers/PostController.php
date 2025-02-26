@@ -119,7 +119,19 @@ class PostController extends Controller
         $post->delete();
         return redirect()->route('admin.post.index');
     }
-    public function filter(){
-        
+    public function filter(Request $request){
+        $query = Post::query();
+
+        // Title bo‘yicha filter
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+        if ($request->has('search')) {
+            $query->where('content', 'like', '%' . $request->search . '%');
+        }
+
+        // Natijani olish
+        $posts = $query->get();
+        return view('admin.post.index');
     }
 }
