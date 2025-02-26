@@ -15,6 +15,7 @@ class Post extends Model
         'user_id',
         'category_id',
         'region_id',
+        'view_count',
         'title',
         'content',
         'price',
