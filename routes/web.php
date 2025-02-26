@@ -1,15 +1,24 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ManageController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [ManageController::class, 'index'])->name('index');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/post', [PostController::class, 'index'])->name('manage');
+    Route::get('/dashboard', [ManageController::class, 'dashboard'])->name('dashboard');
+    Route::resources([
+        'users'=> UserController::class,
+        'posts'=>PostController::class,
+        'categories'=>CategoryController::class,
+        'tags'=>TagController::class
+    ]);
 });
-
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
 
 
 require __DIR__.'/auth.php';

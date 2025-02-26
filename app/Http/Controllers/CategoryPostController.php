@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category_Post;
-use App\Http\Requests\StoreCategory_PostRequest;
-use App\Http\Requests\UpdateCategory_PostRequest;
+use Illuminate\Http\Request;
 
 class CategoryPostController extends Controller
 {
@@ -17,9 +15,17 @@ class CategoryPostController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategory_PostRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -27,7 +33,15 @@ class CategoryPostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category_Post $category_Post)
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
         //
     }
@@ -35,7 +49,7 @@ class CategoryPostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategory_PostRequest $request, Category_Post $category_Post)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -43,7 +57,7 @@ class CategoryPostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category_Post $category_Post)
+    public function destroy(string $id)
     {
         //
     }

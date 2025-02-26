@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post_Tag;
-use App\Http\Requests\StorePost_TagRequest;
-use App\Http\Requests\UpdatePost_TagRequest;
+use Illuminate\Http\Request;
 
 class PostTagController extends Controller
 {
@@ -17,9 +15,17 @@ class PostTagController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePost_TagRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -27,7 +33,15 @@ class PostTagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post_Tag $post_Tag)
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
         //
     }
@@ -35,7 +49,7 @@ class PostTagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePost_TagRequest $request, Post_Tag $post_Tag)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -43,7 +57,7 @@ class PostTagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post_Tag $post_Tag)
+    public function destroy(string $id)
     {
         //
     }
