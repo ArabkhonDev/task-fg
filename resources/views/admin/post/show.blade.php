@@ -16,16 +16,25 @@
                 <!-- Product Image -->
                 <div class="md:w-1/3 p-4 relative">
                     <div class=" ">
+                        @foreach ($post->tags as $tag)
+                            <span
+                                class="relative top-1 right-3 bg-red-500 text-white px-3 py-1 rounded m-3 text-sm font-medium">
+                                {{ $tag->name }}
+                            </span>
+                        @endforeach
                         <img src="{{ asset('storage/' . $post->image) }}" width="500px" alt="HP Victus Laptop"
                             class="w-full h-auto object-cover rounded-lg" />
-                        <button class="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none">
-                            <svg class="w-6 h-6 absolute top-0 right-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                </path>
-                            </svg>
-                        </button>
+                        <div class="flex flex-wrap">
+                            <button class="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none">
+                                <svg class="w-6 h-6 absolute top-0 right-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                    </path>
+                                </svg>
+                            </button>
+
+                        </div>
                     </div>
                 </div>
 
@@ -49,15 +58,17 @@
 
                     <p class="text-green-600 text-sm font-semibold mb-4">Free Delivery</p>
                     @if (auth()->user()->id == $post->user_id)
-                    <div class="flex">
-                        <a class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" href="{{ route('posts.edit', ['post' => $post->id]) }}">Postni
-                            o'zgartirish</a>
-                        <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="post"
-                            class="mx-2" onsubmit="return confirm('postni o\'chirishga ishonchingiz komilmi?')">
-                            @method('delete')
-                            @csrf<button type="submit" class="flex-1 bg-red-400 hover:bg-red-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">O'chirish</button>
-                        </form>
-                    </div>
+                        <div class="flex">
+                            <a class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+                                href="{{ route('posts.edit', ['post' => $post->id]) }}">Postni
+                                o'zgartirish</a>
+                            <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="post"
+                                class="mx-2" onsubmit="return confirm('postni o\'chirishga ishonchingiz komilmi?')">
+                                @method('delete')
+                                @csrf<button type="submit"
+                                    class="flex-1 bg-red-400 hover:bg-red-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">O'chirish</button>
+                            </form>
+                        </div>
                     @else
                         <div class="flex space-x-4">
                             <button

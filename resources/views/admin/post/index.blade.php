@@ -49,7 +49,7 @@
         </div>
         <div class="posts ml-1 m-3">
             <div class="div">
-                Jami aloqador Post - <b>{{$count}}</b>
+                Jami aloqador Post - <b>{{ $count }}</b>
             </div>
             <div class="min-h-screen w-[900px] m-auto bg-gray-100  items-center justify-between -ml-[10px]">
                 @foreach ($posts as $post)
@@ -60,7 +60,8 @@
                         <div class="p-5 flex-1 space-y-4 w-50 bg-blue-300">
                             <div>
                                 <h3 class="text-xl font-bold text-gray-900">{{ $post->title }}</h3>
-                                <p class="text-gray-500 mt-1">{{ $post->region->name }} - {{$post->region->address}}</p>
+                                <p class="text-gray-500 mt-1">{{ $post->region->name }} - {{ $post->region->address }}
+                                </p>
                                 <h1 class="text-gray-500 mt-1">{{ $post->user->name }}</h1>
                             </div>
 
@@ -87,11 +88,14 @@
                         <div class="relative flex-1  border-2">
                             <img src="{{ asset('storage/' . $post->image) }}" width="300px" alt="Product"
                                 class="w-full h-52 object-cover" />
-                            <span
-                                class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                                News
-                            </span>
-                            <strong>Author</strong> {{auth()->user()->name}}
+                                {{-- @dd($post->tags) --}}
+                            @foreach ($post->tags as $tag)
+                                <span
+                                    class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                                    {{$tag->name}}
+                                </span>
+                            @endforeach
+                            <strong>Author</strong> {{ auth()->user()->name }}
                         </div>
 
                     </div>
