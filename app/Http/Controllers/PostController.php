@@ -17,11 +17,48 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::latest()->simplePaginate(6);
+        // dd($request);
+        $query = Post::query();
+
+        if ($request->filled('name')) {
+            $query->where('title', 'ILIKE', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('name')) {
+            $query->where('content', 'ILIKE', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('region_id') != null) {
+            $query->where('region_id', $request->region_id);
+        }
+
+        if ($request->filled('category_id') != null) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', floatval($request->min_price));
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', floatval($request->max_price));
+        }
+
+        if ($query->get()) {
+            $posts = $query->get();
+            $count = 0;
+            foreach ($posts as $post) {
+                $count++; // Qo‘lda sanash
+            }
+        }else{
+            $posts = Post::latest()->simplePaginate(6);
+        }
+
         return view('admin.post.index')->with([
-            'posts'=>$posts,
-            'categories'=>Category::all(),
-            'regions'=>Region::all(),
+            'posts' => $posts,
+            'count' => $count,
+            'categories' => Category::all(),
+            'regions' => Region::all(),
         ]);
     }
 
@@ -31,9 +68,9 @@ class PostController extends Controller
     public function create()
     {
         return view('admin.post.create')->with([
-            'categories'=>Category::all(),
-            'regions'=>Region::all(),
-            'tags'=>Tag::all()
+            'categories' => Category::all(),
+            'regions' => Region::all(),
+            'tags' => Tag::all()
         ]);
     }
 
@@ -48,22 +85,21 @@ class PostController extends Controller
             $path = $request->file('image')->storeAs('post-images', $name);
         }
         $post = Post::create([
-            'user_id'=>auth()->user()->id,
-            'title'=>$request->title,
-            'content'=>$request->content,
-            'region_id'=>$request->region_id,
-            'category_id'=>$request->category_id,
-            'price'=>$request->price,
-            'image'=>$path ?? null
+            'user_id' => auth()->user()->id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'region_id' => $request->region_id,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+            'image' => $path ?? null
         ]);
 
-        if(isset($request->tags)){
-            foreach($request->tags as $tag){
+        if (isset($request->tags)) {
+            foreach ($request->tags as $tag) {
                 $post->tags()->attach($tag);
             }
         }
         return redirect()->route('posts.index');
-         
     }
 
     /**
@@ -73,8 +109,12 @@ class PostController extends Controller
     {
         // $redisKey = "post:{$post->id}:views";
         // Redis::incr($redisKey);
-        $post->increment('view_count');
-        return view('admin.post.show')->with(['post'=>$post]);
+        if(auth()->user()->id != $post->user_id){
+            $post->increment('view_count');
+        }else{
+            return $post;
+        }
+        return view('admin.post.show')->with(['post' => $post]);
     }
 
     /**
@@ -82,7 +122,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.post.edit')->with(['post'=>$post]);
+        if(auth()->user()->id == $post->user_id){
+            return view('admin.post.edit')->with(['post' => $post]);
+        }
     }
 
     /**
@@ -98,12 +140,12 @@ class PostController extends Controller
             $path = $request->file('image')->storeAs('product-images', $name);
         }
         $post->update([
-            'title'=>$request->title,
-            'content'=>$request->content,
-            'region_id'=>$request->region_id,
-            'category_id'=>$request->category_id,
-            'price'=>$request->price,
-            'image'=>$path ?? null
+            'title' => $request->title,
+            'content' => $request->content,
+            'region_id' => $request->region_id,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+            'image' => $path ?? null
         ]);
         return redirect()->route('posts.index');
     }
@@ -119,19 +161,38 @@ class PostController extends Controller
         $post->delete();
         return redirect()->route('admin.post.index');
     }
-    public function filter(Request $request){
-        $query = Post::query();
+    public function filter(Request $request, $id)
+    {
+        dd($request);
+        // $query = Post::query();
 
-        // Title bo‘yicha filter
-        if ($request->has('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
-        if ($request->has('search')) {
-            $query->where('content', 'like', '%' . $request->search . '%');
-        }
+        // // Title bo‘yicha filter
+        // if ($request->has('search')) {
+        //     $query->where('title', 'like', '%' . $request->name . '%');
+        // } else if ($request->has('search')) {
+        //     $query->where('content', 'like', '%' . $request->name . '%');
+        // }
 
-        // Natijani olish
-        $posts = $query->get();
-        return view('admin.post.index');
+        // // Natijani olish
+        // $posts = $query->get();
+
+        // // ID faqat raqam ekanligini tekshirish
+        // if (!ctype_digit($id)) {
+        //     return response()->json([
+        //         'error' => 'Invalid ID format. It must be a number.'
+        //     ], 400);
+        // }
+
+        // // Postni olish
+        // $post = Post::find($id);
+
+        // if (!$post) {
+        //     return response()->json([
+        //         'error' => 'Post not found.'
+        //     ], 404);
+        // }
+
+        // return response()->json($post);
+        // return view('admin.post.index');
     }
 }

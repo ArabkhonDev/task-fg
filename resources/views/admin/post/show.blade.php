@@ -7,7 +7,7 @@
     <div class="title">
         <div class="flex w-[1280px] flex-start p-2 m-auto ">
             <button type="submit" class="btn btn-primary bg-blue-400 p-3 rounded hover:underline decoration-1">
-                <a href="{{route('posts.index')}}" class="btn btn-primary ">Ortga</a>
+                <a href="{{ route('posts.index') }}" class="btn btn-primary ">Ortga</a>
             </button>
         </div>
         <!-- component -->
@@ -48,7 +48,19 @@
                     </div>
 
                     <p class="text-green-600 text-sm font-semibold mb-4">Free Delivery</p>
-
+                    @if (auth()->user()->id == $post->user_id)
+                    @dd(auth()->user()->id)
+                        <div class="flex space-x-4">
+                            <button
+                                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                                Edit
+                            </button>
+                            <button
+                                class="flex-1 bg-gray-200 hover:bg-blach-300 text-white-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                                Delete
+                            </button>
+                        </div>
+                    @endif
                     <div class="flex space-x-4">
                         <button
                             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
