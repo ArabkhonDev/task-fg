@@ -19,29 +19,34 @@ class PostController extends Controller
     {
         // dd($request);
         $query = Post::query();
+        $name = $request->name;
+        $region_id = $request->region_id;
+        $category_id = $request->category_id;
+        $min_price = $request->min_price;
+        $max_price = $request->max_price;
 
         if ($request->filled('name')) {
-            $query->where('title', 'ILIKE', '%' . $request->name . '%');
+            $query->where('title', 'ILIKE', '%' . $name . '%');
         }
 
         if ($request->filled('name')) {
-            $query->where('content', 'ILIKE', '%' . $request->name . '%');
+            $query->where('content', 'ILIKE', '%' . $name . '%');
         }
 
         if ($request->filled('region_id') != null) {
-            $query->where('region_id', $request->region_id);
+            $query->where('region_id', $region_id);
         }
 
         if ($request->filled('category_id') != null) {
-            $query->where('category_id', $request->category_id);
+            $query->where('category_id', $category_id);
         }
 
         if ($request->filled('min_price')) {
-            $query->where('price', '>=', floatval($request->min_price));
+            $query->where('price', '>=', floatval($min_price));
         }
 
         if ($request->filled('max_price')) {
-            $query->where('price', '<=', floatval($request->max_price));
+            $query->where('price', '<=', floatval($max_price));
         }
 
         if ($query->get()) {
@@ -50,7 +55,7 @@ class PostController extends Controller
             foreach ($posts as $post) {
                 $count++; // Qo‘lda sanash
             }
-        }else{
+        } else {
             $posts = Post::latest()->simplePaginate(6);
         }
 
@@ -109,12 +114,12 @@ class PostController extends Controller
     {
         // $redisKey = "post:{$post->id}:views";
         // Redis::incr($redisKey);
-        if(auth()->user()->id != $post->user_id){
+        if (auth()->user()->id != $post->user_id) {
             $post->increment('view_count');
-        }else{
-            return $post;
         }
-        return view('admin.post.show')->with(['post' => $post]);
+        return view('admin.post.show')->with([
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -122,8 +127,13 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        if(auth()->user()->id == $post->user_id){
-            return view('admin.post.edit')->with(['post' => $post]);
+        if (auth()->user()->id == $post->user_id) {
+            return view('admin.post.edit')->with([
+                'post' => $post,
+                'categories' => Category::all(),
+                'regions' => Region::all(),
+                'tags' => Tag::all()
+            ]);
         }
     }
 

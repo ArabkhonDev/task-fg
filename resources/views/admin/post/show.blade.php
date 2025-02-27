@@ -16,7 +16,7 @@
                 <!-- Product Image -->
                 <div class="md:w-1/3 p-4 relative">
                     <div class=" ">
-                        <img src="{{ asset('storage/' . $post->image) }}" alt="HP Victus Laptop"
+                        <img src="{{ asset('storage/' . $post->image) }}" width="500px" alt="HP Victus Laptop"
                             class="w-full h-auto object-cover rounded-lg" />
                         <button class="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none">
                             <svg class="w-6 h-6 absolute top-0 right-2" fill="none" stroke="currentColor"
@@ -49,30 +49,29 @@
 
                     <p class="text-green-600 text-sm font-semibold mb-4">Free Delivery</p>
                     @if (auth()->user()->id == $post->user_id)
-                    @dd(auth()->user()->id)
+                    <div class="flex">
+                        <a class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" href="{{ route('posts.edit', ['post' => $post->id]) }}">Postni
+                            o'zgartirish</a>
+                        <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="post"
+                            class="mx-2" onsubmit="return confirm('postni o\'chirishga ishonchingiz komilmi?')">
+                            @method('delete')
+                            @csrf<button type="submit" class="flex-1 bg-red-400 hover:bg-red-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">O'chirish</button>
+                        </form>
+                    </div>
+                    @else
                         <div class="flex space-x-4">
                             <button
                                 class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                                Edit
+                                Buy Now
                             </button>
                             <button
-                                class="flex-1 bg-gray-200 hover:bg-blach-300 text-white-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                                Delete
+                                class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                                Add to Cart
                             </button>
-                        </div>
                     @endif
-                    <div class="flex space-x-4">
-                        <button
-                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                            Buy Now
-                        </button>
-                        <button
-                            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                            Add to Cart
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

@@ -8,7 +8,7 @@
         <button type="submit" class="btn btn-primary bg-blue-400 p-3 rounded hover:underline decoration-1">
             <a href="{{ route('posts.create') }}" class="btn btn-primary ">E'lon yaratish</a>
         </button>
-        <form action="{{route('posts.index')}}" method="get" class="rounded">
+        <form action="#" method="get" class="rounded">
             @csrf
             <input type="text" name="name" placeholder="anyone searching">
             <button type="submit" class="bg-green-200 p-2">Search</button>
