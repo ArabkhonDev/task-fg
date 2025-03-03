@@ -10,7 +10,7 @@
         </button>
         <form action="#" method="get" class="rounded">
             @csrf
-            <input type="text" name="name" placeholder="anyone searching">
+            <input type="text" name="search" placeholder="anyone searching">
             <button type="submit" class="bg-green-200 p-2">Search</button>
         </form>
     </div>

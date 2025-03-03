@@ -8,45 +8,38 @@ use App\Models\Post;
 use App\Models\Region;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
-        // dd($request);
         $query = Post::query();
-        $name = $request->name;
+        $search = $request->search;
         $region_id = $request->region_id;
         $category_id = $request->category_id;
         $min_price = $request->min_price;
         $max_price = $request->max_price;
 
-        if ($request->filled('name')) {
-            $query->where('title', 'ILIKE', '%' . $name . '%');
-        }
-
-        if ($request->filled('name')) {
-            $query->where('content', 'ILIKE', '%' . $name . '%');
-        }
-
-        if ($request->filled('region_id') != null) {
-            $query->where('region_id', $region_id);
-        }
-
-        if ($request->filled('category_id') != null) {
+        if ($request->filled('category_id')) {
             $query->where('category_id', $category_id);
         }
-
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', floatval($min_price));
+        if ($request->filled('search')) {
+            $query->where('title', $search);
         }
-
+        if ($request->filled('search')) {
+            $query->where('content', $search);
+        }
+        if ($request->filled('region_id')) {
+            $query->where('region_id', $region_id);
+        }
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $min_price);
+        }
         if ($request->filled('max_price')) {
-            $query->where('price', '<=', floatval($max_price));
+            $query->where('price', '<=', $max_price);
         }
 
         if ($query->get()) {

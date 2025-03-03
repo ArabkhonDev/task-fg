@@ -12,6 +12,6 @@ class ManageController extends Controller
     }
 
     public function dashboard(){
-        return view('dashboard');
+        return redirect()->route('posts.index');
     }
 }
